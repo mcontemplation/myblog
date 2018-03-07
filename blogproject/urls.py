@@ -16,8 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
+from django.conf.urls import url
 urlpatterns = [
+    url('^accounts/',include('allauth.urls')),
     path('admin/', admin.site.urls),
     path('',include('blog.urls',namespace = 'blog')),
     path(r'', include('comments.urls')),
+    url(r'^search/', include('haystack.urls')),
+
 ]

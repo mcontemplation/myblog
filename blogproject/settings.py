@@ -38,9 +38,33 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'haystack',
     'blog',
-    'comments'
+    'comments',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.weibo',
+    'allauth.socialaccount.providers.weixin',
+    'allauth.socialaccount.providers.github',
 ]
+SITE_ID = 1
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_REQUIRED = True
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'blog.whoosh_cn_backends.WhooshEngine',
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    },
+}
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -52,8 +76,16 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'blogproject.urls'
 
+ROOT_URLCONF = 'blogproject.urls'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_HOST_USER = '1284758987@qq.com'
+EMAIL_HOST_PASSWORD = 'fbharytmyxsdgcaf'
+EMAIL_PORT = 25
+EMAIL_USE_TLS = True  # 这里必须是 True，否则发送不成功
+DEFAULT_FROM_EMAIL = 'xiaopeng-liu <1284758987@qq.com>'
+LOGIN_REDIRECT_URL = '/'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
